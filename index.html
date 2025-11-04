@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Overpass:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Formularios - Javier Rojo</title>
+</head>
+
+<body>
+    <p id="header">formularios</p>
+    <div id="add-form-btn"></div>
+    <div id="form-selection">
+        <p id="form-selection-p">Javier, dale ahí.<br>¿Qué quieres añadir?</p>
+        <div id="form-selection-btns">
+            <p class="new-form-btn" id="news-select-form-btn">novedad</p>
+            <p class="new-form-btn" id="concert-select-form-btn">concierto</p>
+        </div>
+    </div>
+
+    <div id="news-form" class="form-container">
+        <p class="subheader">novedad</p>
+        <form action="/submit" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="sheet" value="news" class="hidden-input">
+            <div class="inputs-container">
+                <div class="container">
+                    <label for="news-date">fecha</label>
+                    <input type="date" id="news-date" name="date" class="input">
+                </div>
+                <div class="container">
+                    <label for="news-title">título</label>
+                    <input type="text" id="news-title" name="title" class="input">
+                </div>
+                <div class="container">
+                    <label for="news-content">contenido <br>
+                        <span>(enlace Google Docs)</span>
+                    </label>
+                    <input type="url" id="news-content" name="content" class="input">
+                </div>
+                <div class="container">
+                    <label for="news-image">imagen</label>
+                    <input type="file" id="news-image" name="image" class="image-input" accept="image/*">
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">añadir</button>
+        </form>
+    </div>
+
+    <div id="concert-form" class="form-container">
+        <p class="subheader">concierto</p>
+        <form action="/submit" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="sheet" value="concerts" class="hidden-input">
+            <div class="inputs-container">
+                <div class="container">
+                    <label for="concert-date">fecha</label>
+                    <input type="date" id="concert-date" name="date" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-venue">lugar</label>
+                    <input type="text" id="concert-venue" name="venue" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-url-venue">enlace lugar</label>
+                    <input type="url" id="concert-url-venue" name="venueUrl" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-city">ciudad</label>
+                    <input type="text" id="concert-city" name="city" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-country">país<br>
+                        <span>(ej: ES)</span>
+                    </label>
+                    <input type="text" id="concert-country" name="country" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-ticket">enlace entrada</label>
+                    <input type="url" id="concert-ticket" name="ticket" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-band">nombre banda</label>
+                    <input type="text" id="concert-band" name="band" class="input">
+                </div>
+                <div class="container">
+                    <label for="concert-lineup">músicos
+                        <br>
+                        <span>(ej: Javier Rojo - sax | John Coltrane - sax | etc...)</span>
+                    </label>
+                    <input type="text" id="concert-lineup" name="lineup">
+                </div>
+                <div class="container">
+                    <label for="concert-image">imagen</label>
+                    <input type="file" id="concert-image" name="image" class="image-input" accept="image/*">
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">añadir</button>
+        </form>
+    </div>
+
+    <script src="./index.js" type="module"></script>
+</body>
+
+</html>
