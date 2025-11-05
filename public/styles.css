@@ -234,8 +234,6 @@ span {
     background-color: var(--blue-flashy);
 }
 
-
-
 @media (width < 600px) {
     .submit-btn {
         padding: var(--spacing-2);
