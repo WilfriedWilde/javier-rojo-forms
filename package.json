@@ -1,20 +1,13 @@
 {
-  "name": "javier-rojo-backend",
+  "name": "javier-rojo-website",
   "version": "1.0.0",
-  "description": "Backend for Javier Rojo Website - handles Cloudinary uploads and Google Sheets submission",
-  "main": "server.js",
-  "type": "module",
+  "description": "Javier Rojo Website - Google Sheets + Cloudinary upload",
   "scripts": {
-    "start": "node server.js"
+    "dev": "vercel dev",
+    "build": "",
+    "start": "vercel start"
   },
   "dependencies": {
-    "@cloudinary/url-gen": "^1.22.0",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "form-data": "^4.0.4",
-    "multer": "^2.0.2",
-    "node-fetch": "^3.3.2"
-  },
-  "author": "Javier Rojo",
-  "license": "ISC"
+    "form-data": "^4.0.4"
+  }
 }

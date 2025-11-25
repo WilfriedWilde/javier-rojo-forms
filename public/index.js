@@ -1,6 +1,6 @@
 // icons
 const addFormBtn = document.getElementById('add-form-btn');
-const iconsURLS = ['../icons/add.svg', '../icons/delete.svg'];
+const iconsURLS = ['./icons/add.svg', './icons/delete.svg'];
 let hoverColors = {};
 let icons = {};
 
