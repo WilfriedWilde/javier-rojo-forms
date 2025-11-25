@@ -1,15 +1,10 @@
 {
   "name": "javier-rojo-website",
   "version": "1.0.0",
-  "description": "Javier Rojo Website - Google Sheets + Cloudinary upload",
-  "scripts": {
-    "dev": "vercel dev",
-    "build": "",
-    "start": "vercel start"
-  },
+  "scripts": {},
   "dependencies": {
     "form-data": "^4.0.4",
-    "node-fetch": "^2.6.7",
-    "busboy": "^1.6.0"
+    "busboy": "^1.6.0",
+    "node-fetch": "^3.3.2"
   }
 }

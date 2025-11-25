@@ -72,26 +72,43 @@ function handleFormSelection(event) {
 
     for (const form of forms) {
         if (form.id.includes(buttonId)) {
-            // change icon
-            addFormBtn.innerHTML = icons.delete;
-            document.documentElement.style.setProperty('--hover-color', `${hoverColors.delete}`);
-
-            // hide form selection
-            formSelection.style.opacity = '0';
-            setTimeout(() => {
-                formSelection.style.display = 'none';
-            }, 200);
-            isSelectionDisplayed = false;
-
-            // display form
-            form.style.display = 'flex';
-            setTimeout(() => {
-                form.style.opacity = '1';
-            }, 200);
-            form.classList.add('displayed');
-            isFormDisplayed = true;
+            handleFormDisplay(form)
         }
     }
+}
+
+function handleFormDisplay(form) {
+    changeIcon();
+    hideFormSelection();
+    displayForm(form);
+    resetFormInputValues(form);
+}
+
+function changeIcon() {
+    addFormBtn.innerHTML = icons.delete;
+    document.documentElement.style.setProperty('--hover-color', `${hoverColors.delete}`);
+}
+
+function hideFormSelection() {
+    formSelection.style.opacity = '0';
+    setTimeout(() => {
+        formSelection.style.display = 'none';
+    }, 200);
+    isSelectionDisplayed = false;
+}
+
+function displayForm(form) {
+    form.style.display = 'flex';
+    setTimeout(() => {
+        form.style.opacity = '1';
+    }, 200);
+    form.classList.add('displayed');
+    isFormDisplayed = true;
+}
+
+function resetFormInputValues(form) {
+    const inputValues = Array.from(form.querySelectorAll('input'));
+    console.log(inputValues)
 }
 
 selectionBtns.addEventListener('click', handleFormSelection);
