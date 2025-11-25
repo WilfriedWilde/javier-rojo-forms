@@ -14,6 +14,8 @@
     --blue-flashy: hsl(209 89.4% 60.6%);
     --black: hsl(202, 17%, 21%);
     --red: hsl(350, 100%, 50%);
+    --red-transparent: hsla(350, 100%, 50%, 0.8);
+    --green-transparent: hsla(126, 100%, 50%, 0.8);
     --white: hsl(216, 0%, 91.4%);
     --spacing-1: 12px;
     --spacing-2: 19px;
@@ -35,6 +37,24 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#submit-message {
+    position: fixed;
+    display: none;
+    font-family: var(--main-font);
+    font-size: var(--spacing-3);
+    font-style: italic;
+    font-weight: 100;
+    text-align: center;
+    padding: var(--spacing-3);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--white);
+    border-radius: var(--spacing-1);
+    z-index: -1;
+    transition: opacity 0.3s ease;
 }
 
 #header {

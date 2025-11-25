@@ -60,14 +60,18 @@ export default async function handler(req, res) {
     }
 
     // Send to Google Apps Script
-    const data = { ...fields, image: imageUrl };
+    const data = { ...fields, image: files?.[0]?.filename || "" };
     const scriptRes = await fetch(process.env.SHEET_SCRIPT_URL, {
       method: "POST",
       body: new URLSearchParams(data),
     });
-    const text = await scriptRes.text();
 
-    res.status(200).send(text);
+    if (scriptRes.ok) {
+      res.status(202).send();
+    } else {
+      console.error("Google Script returned an error", scriptRes.status);
+      res.status(500).send("Failed to submit");
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

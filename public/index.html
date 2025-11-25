@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <div id="submit-message">¡Repámpanos! Algo ha fallado... habla con el maldito francés ese que te hizo la web :(</div>
     <p id="header">formularios</p>
     <div id="add-form-btn"></div>
     <div id="form-selection">
@@ -24,9 +25,9 @@
         </div>
     </div>
 
-    <div id="news-form" class="form-container">
+    <div id="news-form-container" class="form-container">
         <p class="subheader">novedad</p>
-        <form action="/api/submit" method="POST" enctype="multipart/form-data">
+        <form id="news-form" enctype="multipart/form-data">
             <input type="hidden" name="sheet" value="news" class="hidden-input">
             <div class="inputs-container">
                 <div class="container">
@@ -52,9 +53,9 @@
         </form>
     </div>
 
-    <div id="concert-form" class="form-container">
+    <div id="concert-form-container" class="form-container">
         <p class="subheader">concierto</p>
-        <form action="/api/submit" method="POST" enctype="multipart/form-data">
+        <form id="concert-form" enctype="multipart/form-data">
             <input type="hidden" name="sheet" value="concerts" class="hidden-input">
             <div class="inputs-container">
                 <div class="container">

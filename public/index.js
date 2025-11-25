@@ -1,15 +1,22 @@
-// icons
 const addFormBtn = document.getElementById('add-form-btn');
+const formContainers = Array.from(document.querySelectorAll('.form-container'));
+const formSelection = document.getElementById('form-selection');
+const selectionBtns = document.getElementById('form-selection-btns');
+const forms = Array.from(document.querySelectorAll('form'));
+const submitMessage = document.getElementById('submit-message');
 const iconsURLS = ['./icons/add.svg', './icons/delete.svg'];
-let hoverColors = {};
-let icons = {};
 
-async function fetchIcon(url) {
-    const response = await fetch(url);
-    const svg = await response.text();
-    const key = url.split('/')[2].split('.')[0];
-    icons[key] = svg;
+
+let hoverColors = {}, icons = {};
+let isSelectionDisplayed = false, isFormDisplayed = false;
+
+function initPage() {
+    loadIcons();
+    setHoverColors();
+    addListeners();
 }
+
+initPage();
 
 async function loadIcons() {
     for (const url of iconsURLS) {
@@ -18,99 +25,178 @@ async function loadIcons() {
     addFormBtn.innerHTML = icons.add;
 }
 
-loadIcons();
+async function fetchIcon(url) {
+    const response = await fetch(url);
+    const svg = await response.text();
+    const key = url.split('/')[2].split('.')[0];
+    icons[key] = svg;
+}
 
-hoverColors.add = getComputedStyle(document.documentElement).getPropertyValue('--blue-flashy');
-hoverColors.delete = getComputedStyle(document.documentElement).getPropertyValue('--red');
+function setHoverColors() {
+    hoverColors.add = getComputedStyle(document.documentElement).getPropertyValue('--blue-flashy');
+    hoverColors.delete = getComputedStyle(document.documentElement).getPropertyValue('--red');
+}
 
-// display form selection
-const forms = Array.from(document.querySelectorAll('.form-container'));
-const formSelection = document.getElementById('form-selection');
-let isSelectionDisplayed = false;
+function addListeners() {
+    addFormBtn.addEventListener('click', handleAddFormButton);
+    selectionBtns.addEventListener('click', handleFormSelection);
+    forms.forEach(form => form.addEventListener('submit', async (event) => handleFormSubmit(event)));
+}
+
+function handleAddFormButton() {
+    handleFormSelectionDisplay();
+    if (isFormDisplayed) {
+        changeIcon('add');
+        hideForm();
+    }
+}
+
+function handleFormSelectionDisplay() {
+    if (!isSelectionDisplayed && !isFormDisplayed) {
+        showFormSelection();
+    } else {
+        hideFormSelection();
+    }
+}
 
 function showFormSelection() {
-    if (!isSelectionDisplayed && !isFormDisplayed) {
-        formSelection.style.display = 'flex';
-        setTimeout(() => {
-            formSelection.style.opacity = '1';
-        }, 100)
-        isSelectionDisplayed = true;
-    } else {
-        formSelection.style.opacity = '0';
-        setTimeout(() => {
-            formSelection.style.display = 'none';
-        }, 300)
-        isSelectionDisplayed = false;
-    }
-
-    if (isFormDisplayed) {
-        // change icon
-        addFormBtn.innerHTML = icons.add;
-        document.documentElement.style.setProperty('--hover-color', `${hoverColors.add}`);
-
-        // hide form
-        const form = forms.filter(form => form.classList.contains('displayed'))[0];
-
-        form.style.opacity = '0';
-        setTimeout(() => {
-            form.style.display = 'none';
-        }, 300);
-
-        form.classList.remove('displayed');
-        isFormDisplayed = false;
-    }
-}
-
-addFormBtn.addEventListener('click', showFormSelection);
-
-// display form
-const selectionBtns = document.getElementById('form-selection-btns');
-let isFormDisplayed = false;
-
-function handleFormSelection(event) {
-    const buttonId = event.target.id.split('-')[0];
-
-    for (const form of forms) {
-        if (form.id.includes(buttonId)) {
-            handleFormDisplay(form)
-        }
-    }
-}
-
-function handleFormDisplay(form) {
-    changeIcon();
-    hideFormSelection();
-    displayForm(form);
-    resetFormInputValues(form);
-}
-
-function changeIcon() {
-    addFormBtn.innerHTML = icons.delete;
-    document.documentElement.style.setProperty('--hover-color', `${hoverColors.delete}`);
+    formSelection.style.display = 'flex';
+    setTimeout(() => {
+        formSelection.style.opacity = '1';
+    }, 100)
+    isSelectionDisplayed = true;
 }
 
 function hideFormSelection() {
     formSelection.style.opacity = '0';
     setTimeout(() => {
         formSelection.style.display = 'none';
-    }, 200);
+    }, 300);
     isSelectionDisplayed = false;
 }
 
-function displayForm(form) {
-    form.style.display = 'flex';
+function changeIcon(name) {
+    addFormBtn.innerHTML = icons[name];
+    document.documentElement.style.setProperty('--hover-color', `${hoverColors[name]}`);
+}
+
+function hideForm() {
+    const formContainer = formContainers.filter(container => container.classList.contains('displayed'))[0];
+
+    formContainer.style.opacity = '0';
     setTimeout(() => {
-        form.style.opacity = '1';
+        formContainer.style.display = 'none';
+    }, 300);
+
+    formContainer.classList.remove('displayed');
+    isFormDisplayed = false;
+}
+
+function handleFormSelection(event) {
+    const buttonId = event.target.id.split('-')[0];
+    for (const container of formContainers) {
+        if (container.id.includes(buttonId)) {
+            handleFormDisplay(container)
+        }
+    }
+}
+
+function handleFormDisplay(container) {
+    changeIcon('delete');
+    hideFormSelection();
+    resetForm(container.querySelector('form'));
+    displayForm(container);
+}
+
+function resetForm(form) {
+    form.reset();
+}
+
+function displayForm(container) {
+    container.style.display = 'flex';
+    setTimeout(() => {
+        container.style.opacity = '1';
     }, 200);
-    form.classList.add('displayed');
+    container.classList.add('displayed');
     isFormDisplayed = true;
 }
 
-function resetFormInputValues(form) {
-    const inputValues = Array.from(form.querySelectorAll('input'));
-    console.log(inputValues)
+async function handleFormSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+
+    await trySubmit(form);
+    await returnToInitialPage();
 }
 
-selectionBtns.addEventListener('click', handleFormSelection);
+async function trySubmit(form) {
+    try {
+        handleSuccessSubmit(form);
+    } catch (error) {
+        handleErrorSubmit(error);
+    }
+}
 
+async function handleSuccessSubmit(form) {
+    const serverResponse = await getServerResponse(form);
+    if (serverResponse === 202) {
+        showSuccessSubmitMessage(form);
+    } else {
+        showErrorSubmitMessage();
+    }
+}
 
+async function getServerResponse(form) {
+    const formData = new FormData(form);
+    const response = await fetch('/api/submit', {
+        method: 'POST',
+        body: formData
+    })
+    return response.status;
+}
+
+function showSuccessSubmitMessage(form) {
+    const entryName = getEntryNameInSpanish(form.id.split('-')[0]);
+    const message = `Y un${entryName === 'novedad' ? 'a' : 'o'} ${entryName} más! Bien hecho Javier :)`;
+    displaySubmitMessage(message, 'success');
+}
+
+function displaySubmitMessage(message, type) {
+    updateSubmitMessageCSS(type);
+    submitMessage.textContent = message;
+    setTimeout(() => {
+        resetSubmitMessageCSS();
+    }, 3000)
+}
+
+function updateSubmitMessageCSS(type) {
+    const root = document.documentElement;
+    const color = type === 'success' ? getComputedStyle(root).getPropertyValue('--green-transparent') : getComputedStyle(root).getPropertyValue('--red-transparent')
+    submitMessage.style.backgroundColor = color;
+    submitMessage.style.display = 'block';
+    submitMessage.style.zIndex = '5';
+    submitMessage.style.opacity = '1';
+}
+
+function handleErrorSubmit(error) {
+    console.error(error);
+    showErrorSubmitMessage();
+}
+
+function showErrorSubmitMessage() {
+    const message = '¡Repámpanos! Algo ha fallado... habla con el maldito francés ese que te hizo la web :(';
+    displaySubmitMessage(message, 'error');
+}
+
+function resetSubmitMessageCSS() {
+    submitMessage.style.opacity = '0';
+    setTimeout(() => {
+        submitMessage.style.display = 'none';
+        submitMessage.style.zIndex = '-1';
+    }, 500)
+}
+
+async function returnToInitialPage() {
+    changeIcon('add');
+    hideForm();
+}
