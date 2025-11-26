@@ -1,3 +1,6 @@
+const CLOUD_NAME = 'dgder16kq';
+const UPLOAD_PRESET = 'javier-rojo';
+
 const addFormBtn = document.getElementById('add-form-btn');
 const formContainers = Array.from(document.querySelectorAll('.form-container'));
 const formSelection = document.getElementById('form-selection');
@@ -148,17 +151,53 @@ async function handleSuccessSubmit(form) {
 
 async function getServerResponse(form) {
     const formData = new FormData(form);
+    const fileInput = form.querySelector('.image-input');
+    const file = fileInput?.files?.[0];
+    const imageUrl = await uploadImageToCloudinary(file);
+console.log('image url:', imageUrl)
+    const payload = {};
+    formData.forEach((value, key) => {
+        payload[key] = value;
+    });
+    payload.image = imageUrl;
+
     const response = await fetch('/api/submit', {
         method: 'POST',
-        body: formData
-    })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
     return response.status;
+}
+
+async function uploadImageToCloudinary(file) {
+    if (!file) return '';
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+
+    try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        return data.secure_url || '';
+    } catch (err) {
+        console.error('Cloudinary upload failed', err);
+        return '';
+    }
 }
 
 function showSuccessSubmitMessage(form) {
     const entryName = getEntryNameInSpanish(form.id.split('-')[0]);
     const message = `Y un${entryName === 'novedad' ? 'a' : 'o'} ${entryName} más! Bien hecho Javier :)`;
     displaySubmitMessage(message, 'success');
+}
+
+function getEntryNameInSpanish(name) {
+    return name === 'news' ? 'novedad' : 'concierto';
 }
 
 function displaySubmitMessage(message, type) {

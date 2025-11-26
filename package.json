@@ -2,10 +2,7 @@
   "name": "javier-rojo-website",
   "version": "1.0.0",
   "type": "module",
-  "scripts": {},
   "dependencies": {
-    "form-data": "^4.0.4",
-    "busboy": "^1.6.0",
     "node-fetch": "^3.3.2"
   }
 }
