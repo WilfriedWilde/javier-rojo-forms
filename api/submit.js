@@ -10,7 +10,7 @@ export const config = {
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
-
+console.log('inside handler')
   try {
     const busboy = Busboy({ headers: req.headers });
     const fields = {};
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
     }
 
     // Send to Google Apps Script
-    const data = { ...fields, image: files?.[0]?.filename || "" };
+    const data = { ...fields, image: imageUrl || "" };console.log('data:', data)
     const scriptRes = await fetch(process.env.SHEET_SCRIPT_URL, {
       method: "POST",
       body: new URLSearchParams(data),
