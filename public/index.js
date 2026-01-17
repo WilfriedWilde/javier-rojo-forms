@@ -1,39 +1,17 @@
 const CLOUD_NAME = 'dgder16kq';
 const UPLOAD_PRESET = 'javier-rojo';
 
-const addFormBtn = document.getElementById('add-form-btn');
-const formContainers = Array.from(document.querySelectorAll('.form-container'));
-const formSelection = document.getElementById('form-selection');
-const selectionBtns = document.getElementById('form-selection-btns');
-const forms = Array.from(document.querySelectorAll('form'));
+const form = document.getElementById('form');
 const submitMessage = document.getElementById('submit-message');
-const iconsURLS = ['./icons/add.svg', './icons/delete.svg'];
 
-
-let hoverColors = {}, icons = {};
-let isSelectionDisplayed = false, isFormDisplayed = false;
+let hoverColors = {};
 
 function initPage() {
-    loadIcons();
     setHoverColors();
     addListeners();
 }
 
 initPage();
-
-async function loadIcons() {
-    for (const url of iconsURLS) {
-        await fetchIcon(url);
-    }
-    addFormBtn.innerHTML = icons.add;
-}
-
-async function fetchIcon(url) {
-    const response = await fetch(url);
-    const svg = await response.text();
-    const key = url.split('/')[2].split('.')[0];
-    icons[key] = svg;
-}
 
 function setHoverColors() {
     hoverColors.add = getComputedStyle(document.documentElement).getPropertyValue('--blue-flashy');
@@ -41,87 +19,11 @@ function setHoverColors() {
 }
 
 function addListeners() {
-    addFormBtn.addEventListener('click', handleAddFormButton);
-    selectionBtns.addEventListener('click', handleFormSelection);
-    forms.forEach(form => form.addEventListener('submit', async (event) => handleFormSubmit(event)));
-}
-
-function handleAddFormButton() {
-    handleFormSelectionDisplay();
-    if (isFormDisplayed) {
-        changeIcon('add');
-        hideForm();
-    }
-}
-
-function handleFormSelectionDisplay() {
-    if (!isSelectionDisplayed && !isFormDisplayed) {
-        showFormSelection();
-    } else {
-        hideFormSelection();
-    }
-}
-
-function showFormSelection() {
-    formSelection.style.display = 'flex';
-    setTimeout(() => {
-        formSelection.style.opacity = '1';
-    }, 100)
-    isSelectionDisplayed = true;
-}
-
-function hideFormSelection() {
-    formSelection.style.opacity = '0';
-    setTimeout(() => {
-        formSelection.style.display = 'none';
-    }, 300);
-    isSelectionDisplayed = false;
-}
-
-function changeIcon(name) {
-    addFormBtn.innerHTML = icons[name];
-    document.documentElement.style.setProperty('--hover-color', `${hoverColors[name]}`);
-}
-
-function hideForm() {
-    const formContainer = formContainers.filter(container => container.classList.contains('displayed'))[0];
-
-    formContainer.style.opacity = '0';
-    setTimeout(() => {
-        formContainer.style.display = 'none';
-    }, 300);
-
-    formContainer.classList.remove('displayed');
-    isFormDisplayed = false;
-}
-
-function handleFormSelection(event) {
-    const buttonId = event.target.id.split('-')[0];
-    for (const container of formContainers) {
-        if (container.id.includes(buttonId)) {
-            handleFormDisplay(container)
-        }
-    }
-}
-
-function handleFormDisplay(container) {
-    changeIcon('delete');
-    hideFormSelection();
-    resetForm(container.querySelector('form'));
-    displayForm(container);
+    form.addEventListener('submit', async (event) => handleFormSubmit(event));
 }
 
 function resetForm(form) {
     form.reset();
-}
-
-function displayForm(container) {
-    container.style.display = 'flex';
-    setTimeout(() => {
-        container.style.opacity = '1';
-    }, 200);
-    container.classList.add('displayed');
-    isFormDisplayed = true;
 }
 
 async function handleFormSubmit(event) {
@@ -191,13 +93,8 @@ async function uploadImageToCloudinary(file) {
 }
 
 function showSuccessSubmitMessage(form) {
-    const entryName = getEntryNameInSpanish(form.id.split('-')[0]);
-    const message = `Y un${entryName === 'novedad' ? 'a' : 'o'} ${entryName} más! Bien hecho Javier :)`;
+    const message = `Y una imagen más! Bien hecho Javier :)`;
     displaySubmitMessage(message, 'success');
-}
-
-function getEntryNameInSpanish(name) {
-    return name === 'news' ? 'novedad' : 'concierto';
 }
 
 function displaySubmitMessage(message, type) {
@@ -233,9 +130,4 @@ function resetSubmitMessageCSS() {
         submitMessage.style.display = 'none';
         submitMessage.style.zIndex = '-1';
     }, 500)
-}
-
-async function returnToInitialPage() {
-    changeIcon('add');
-    hideForm();
 }

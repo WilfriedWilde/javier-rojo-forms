@@ -14,94 +14,18 @@
 </head>
 
 <body>
-    <div id="submit-message">¡Repámpanos! Algo ha fallado... habla con el maldito francés ese que te hizo la web :(</div>
-    <p id="header">formularios</p>
-    <div id="add-form-btn"></div>
-    <div id="form-selection">
-        <p id="form-selection-p">Javier, dale ahí.<br>¿Qué quieres añadir?</p>
-        <div id="form-selection-btns">
-            <p class="new-form-btn" id="news-select-form-btn">novedad</p>
-            <p class="new-form-btn" id="concert-select-form-btn">concierto</p>
-        </div>
+    <div id="submit-message">¡Repámpanos! Algo ha fallado... habla con el maldito francés ese que te hizo la web :(
     </div>
+    <p id="header">URL imagen</p>
 
-    <div id="news-form-container" class="form-container">
-        <p class="subheader">novedad</p>
-        <form id="news-form">
-            <input type="hidden" name="sheet" value="news" class="hidden-input">
-            <div class="inputs-container">
-                <div class="container">
-                    <label for="news-date">fecha</label>
-                    <input type="date" id="news-date" name="date" class="input">
-                </div>
-                <div class="container">
-                    <label for="news-title">título</label>
-                    <input type="text" id="news-title" name="title" class="input">
-                </div>
-                <div class="container">
-                    <label for="news-content">contenido <br>
-                        <span>(enlace Google Docs)</span>
-                    </label>
-                    <input type="url" id="news-content" name="content" class="input">
-                </div>
-                <div class="container">
-                    <label for="news-image">imagen</label>
-                    <input type="file" id="news-image" name="image" class="image-input" accept="image/*">
-                </div>
-            </div>
-            <button type="submit" class="submit-btn">añadir</button>
-        </form>
-    </div>
+    <form id="form">
+        <input type="file" id="image" name="image" accept="image/*">
+        <button type="submit" class="submit-btn">conseguir la URL</button>
+    </form>
 
-    <div id="concert-form-container" class="form-container">
-        <p class="subheader">concierto</p>
-        <form id="concert-form">
-            <input type="hidden" name="sheet" value="concerts" class="hidden-input">
-            <div class="inputs-container">
-                <div class="container">
-                    <label for="concert-date">fecha</label>
-                    <input type="date" id="concert-date" name="date" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-venue">lugar</label>
-                    <input type="text" id="concert-venue" name="venue" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-url-venue">enlace lugar</label>
-                    <input type="url" id="concert-url-venue" name="venueUrl" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-city">ciudad</label>
-                    <input type="text" id="concert-city" name="city" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-country">país<br>
-                        <span>(ej: ES)</span>
-                    </label>
-                    <input type="text" id="concert-country" name="country" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-ticket">enlace entrada</label>
-                    <input type="url" id="concert-ticket" name="ticket" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-band">nombre banda</label>
-                    <input type="text" id="concert-band" name="band" class="input">
-                </div>
-                <div class="container">
-                    <label for="concert-lineup">músicos
-                        <br>
-                        <span>(ej: Javier Rojo - sax | John Coltrane - sax | etc...)</span>
-                    </label>
-                    <input type="text" id="concert-lineup" name="lineup">
-                </div>
-                <div class="container">
-                    <label for="concert-image">imagen</label>
-                    <input type="file" id="concert-image" name="image" class="image-input" accept="image/*">
-                </div>
-            </div>
-            <button type="submit" class="submit-btn">añadir</button>
-        </form>
+    <div id="image-url-container">
+        <h3>URL:</h3>
+        <input type="url"></input>
     </div>
 
     <script src="./index.js" type="module"></script>
