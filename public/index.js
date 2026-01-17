@@ -154,7 +154,7 @@ async function getServerResponse(form) {
     const fileInput = form.querySelector('.image-input');
     const file = fileInput?.files?.[0];
     const imageUrl = await uploadImageToCloudinary(file);
-console.log('image url:', imageUrl)
+
     const payload = {};
     formData.forEach((value, key) => {
         payload[key] = value;
