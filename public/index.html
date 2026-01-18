@@ -14,18 +14,22 @@
 </head>
 
 <body>
-    <div id="submit-message">¡Repámpanos! Algo ha fallado... habla con el maldito francés ese que te hizo la web :(
-    </div>
     <p id="header">URL imagen</p>
-
     <form id="form">
         <input type="file" id="image" name="image" accept="image/*">
-        <button type="submit" class="submit-btn">conseguir la URL</button>
+        <button type="submit" class="submit-btn">conseguir URL</button>
     </form>
-
     <div id="image-url-container">
         <h3>URL:</h3>
-        <input type="url"></input>
+        <input type="text" id="image-url" readonly>
+        <div id="copy-btn-container">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" id="copy-btn">
+                <path
+                    d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z" />
+            </svg>
+            <p id="copy-message">¡Copiado!</p>
+        </div>
+        
     </div>
 
     <script src="./index.js" type="module"></script>

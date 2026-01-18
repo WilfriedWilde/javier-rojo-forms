@@ -1,8 +1,11 @@
 const CLOUD_NAME = 'dgder16kq';
 const UPLOAD_PRESET = 'javier-rojo';
 
-const form = document.getElementById('form');
 const submitMessage = document.getElementById('submit-message');
+const form = document.getElementById('form');
+const urlContainer = document.getElementById('image-url');
+const copyBtn = document.getElementById('copy-btn');
+const copyMessage = document.getElementById('copy-message');
 
 let hoverColors = {};
 
@@ -19,60 +22,26 @@ function setHoverColors() {
 }
 
 function addListeners() {
-    form.addEventListener('submit', async (event) => handleFormSubmit(event));
+    form.addEventListener('submit', async (event) => handleImageUpload(event));
+    copyBtn.addEventListener('click', handleUrlCopy);
 }
 
 function resetForm(form) {
     form.reset();
 }
 
-async function handleFormSubmit(event) {
+async function handleImageUpload(event) {
     event.preventDefault();
+
     const form = event.target;
+    const fileInput = form.querySelector('input[type="file"]');
+    const file = fileInput.files[0];
 
-    await trySubmit(form);
-    await returnToInitialPage();
+    const imageUrl = await getImageUrl(file);
+    urlContainer.value = imageUrl;
 }
 
-async function trySubmit(form) {
-    try {
-        handleSuccessSubmit(form);
-    } catch (error) {
-        handleErrorSubmit(error);
-    }
-}
-
-async function handleSuccessSubmit(form) {
-    const serverResponse = await getServerResponse(form);
-    if (serverResponse === 202) {
-        showSuccessSubmitMessage(form);
-    } else {
-        showErrorSubmitMessage();
-    }
-}
-
-async function getServerResponse(form) {
-    const formData = new FormData(form);
-    const fileInput = form.querySelector('.image-input');
-    const file = fileInput?.files?.[0];
-    const imageUrl = await uploadImageToCloudinary(file);
-console.log('image url:', imageUrl)
-    const payload = {};
-    formData.forEach((value, key) => {
-        payload[key] = value;
-    });
-    payload.image = imageUrl;
-
-    const response = await fetch('/api/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
-
-    return response.status;
-}
-
-async function uploadImageToCloudinary(file) {
+async function getImageUrl(file) {
     if (!file) return '';
 
     const formData = new FormData();
@@ -92,42 +61,15 @@ async function uploadImageToCloudinary(file) {
     }
 }
 
-function showSuccessSubmitMessage(form) {
-    const message = `Y una imagen más! Bien hecho Javier :)`;
-    displaySubmitMessage(message, 'success');
+function handleUrlCopy() {
+    navigator.clipboard.writeText(urlContainer.value);
+    displayCopyMessage();
 }
 
-function displaySubmitMessage(message, type) {
-    updateSubmitMessageCSS(type);
-    submitMessage.textContent = message;
+function displayCopyMessage() {
+    copyMessage.style.opacity = 1;
+
     setTimeout(() => {
-        resetSubmitMessageCSS();
-    }, 3000)
-}
-
-function updateSubmitMessageCSS(type) {
-    const root = document.documentElement;
-    const color = type === 'success' ? getComputedStyle(root).getPropertyValue('--green-transparent') : getComputedStyle(root).getPropertyValue('--red-transparent')
-    submitMessage.style.backgroundColor = color;
-    submitMessage.style.display = 'block';
-    submitMessage.style.zIndex = '5';
-    submitMessage.style.opacity = '1';
-}
-
-function handleErrorSubmit(error) {
-    console.error(error);
-    showErrorSubmitMessage();
-}
-
-function showErrorSubmitMessage() {
-    const message = '¡Repámpanos! Algo ha fallado... habla con el maldito francés ese que te hizo la web :(';
-    displaySubmitMessage(message, 'error');
-}
-
-function resetSubmitMessageCSS() {
-    submitMessage.style.opacity = '0';
-    setTimeout(() => {
-        submitMessage.style.display = 'none';
-        submitMessage.style.zIndex = '-1';
-    }, 500)
+        copyMessage.style.opacity = 0;
+    }, 1500)
 }

@@ -15,6 +15,7 @@
     --black: hsl(202, 17%, 21%);
     --red: hsl(350, 100%, 50%);
     --red-transparent: hsla(350, 100%, 50%, 0.8);
+    --green: hsla(126, 100%, 50%, 1);
     --green-transparent: hsla(126, 100%, 50%, 0.8);
     --white: hsl(216, 0%, 91.4%);
     --spacing-1: 12px;
@@ -110,7 +111,7 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.2rem;
+    gap: 0.5rem;
     color: var(--white);
 }
 
@@ -119,14 +120,55 @@ input {
     font-size: var(--spacing-3);
 }
 
-#image-url-container input {
+#image-url {
     font-family: var(--main-font);
     font-size: var(--spacing-2);
     width: 90vw;
     padding: var(--spacing-2);
     background-color: var(--white);
+    color: var(--black);
     border-radius: 5px;
     border: none;
+}
+
+#copy-btn-container {
+    position: relative;
+    width: var(--spacing-4);
+    height: var(--spacing-4);
+}
+
+#copy-btn {
+    width: 100%;
+    fill: var(--white);
+    transition: 0.3s ease;
+}
+
+#copy-btn:hover {
+    cursor: pointer;
+    fill: var(--green);
+}
+
+#copy-message {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+    height: fit-content;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: var(--white);
+    background-color: var(--green-transparent);
+    font-family: var(--main-font);
+    font-size: var(--spacing-1);
+    font-weight: 500;
+    font-style: italic;
+    transition: 0.5s ease;
+    opacity: 0;
 }
 
 @media (width < 600px) {
