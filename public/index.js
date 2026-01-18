@@ -8,16 +8,10 @@ const copyBtn = document.getElementById('copy-btn');
 const copyMessage = document.getElementById('copy-message');
 
 function initPage() {
-    setHoverColors();
     addListeners();
 }
 
 initPage();
-
-function setHoverColors() {
-    hoverColors.add = getComputedStyle(document.documentElement).getPropertyValue('--blue-flashy');
-    hoverColors.delete = getComputedStyle(document.documentElement).getPropertyValue('--red');
-}
 
 function addListeners() {
     form.addEventListener('submit', async (event) => handleImageUpload(event));
