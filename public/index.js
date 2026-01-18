@@ -7,8 +7,6 @@ const urlContainer = document.getElementById('image-url');
 const copyBtn = document.getElementById('copy-btn');
 const copyMessage = document.getElementById('copy-message');
 
-let hoverColors = {};
-
 function initPage() {
     setHoverColors();
     addListeners();
